@@ -15,8 +15,8 @@ layout: default
 
 <!-- Slide 1: Title -->
 <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-<h1 style="font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Seed deck template, AI</h1>
-<p class="subtitle" style="font-size:1.5rem;color:#444;font-weight:400;">Install a skill. Ship a deck. Raise a round.</p>
+<h1 style="font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Seed deck template, AI edition</h1>
+<p class="subtitle" style="font-size:0.85rem;color:#666;font-weight:400;max-width:600px;line-height:1.6;">Type this into Claude Code: &#x201C;Download the edit-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/edit-deck/SKILL.md&#x201D;</p>
 </div>
 
 ---
