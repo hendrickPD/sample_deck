@@ -1,0 +1,13 @@
+/* ── YC Seed Deck – Minimal Design System ── */
+
+/* Match the intentionally simple Google Slides aesthetic */
+:root {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+/* Reset Slidev defaults to plain white */
+.slidev-layout {
+  background: #fff !important;
+  color: #000 !important;
+}
