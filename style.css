@@ -6,8 +6,34 @@
   --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
 }
 
-/* Reset Slidev defaults to plain white */
+/* Light mode (default) — plain white */
 .slidev-layout {
   background: #fff !important;
   color: #000 !important;
+}
+
+/* Dark mode — inverted */
+html.dark .slidev-layout {
+  background: #1a1a2e !important;
+  color: #e0e0e0 !important;
+}
+
+html.dark .slidev-layout h1,
+html.dark .slidev-layout h2 {
+  color: #f0f0f0 !important;
+}
+
+html.dark .slidev-layout ul li,
+html.dark .slidev-layout div {
+  color: #d0d0d0;
+}
+
+/* Invert chart images in dark mode so they remain legible */
+html.dark .slidev-layout img[src*="chart-"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Page numbers in dark mode */
+html.dark .slidev-layout div[style*="color:#999"] {
+  color: #666 !important;
 }
