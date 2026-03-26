@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npx slidev build --base /",
+  "outputDirectory": "dist",
+  "installCommand": "npm install"
+}
