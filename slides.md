@@ -15,8 +15,8 @@ layout: default
 
 <!-- Slide 1: Title -->
 <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-<h1 style="font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:#000;margin:0 0 0.5rem;">Seed deck template, Inc.</h1>
-<p style="font-size:1.3rem;color:#000;font-weight:400;">A template that tells you how to build a seed deck</p>
+<h1 style="font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Seed deck template, Inc.</h1>
+<p class="subtitle" style="font-size:1.5rem;color:#444;font-weight:400;">A template that tells you how to build a seed deck</p>
 </div>
 
 ---

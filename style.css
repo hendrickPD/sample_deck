@@ -33,6 +33,12 @@ html.dark .slidev-layout img[src*="chart-"] {
   filter: invert(1) hue-rotate(180deg);
 }
 
+/* Subtitle text in dark mode */
+html.dark .slidev-layout .subtitle,
+html.dark .slidev-layout p {
+  color: #b0b0b0 !important;
+}
+
 /* Page numbers in dark mode */
 html.dark .slidev-layout div[style*="color:#999"] {
   color: #666 !important;
