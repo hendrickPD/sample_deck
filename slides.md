@@ -214,6 +214,7 @@ layout: default
   <li>Series A ready in 12 months: 10k installs, $2M ARR</li>
   <li>Try it yourself: /seed-deck</li>
   <li>Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a></li>
+  <li>Huge thank you to <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">Garry Tan</a> and <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">gstack</a></li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">10</div>
 </div>
