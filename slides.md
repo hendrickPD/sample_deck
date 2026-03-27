@@ -213,7 +213,7 @@ layout: default
   <li>Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li>Series A ready in 12 months: 10k installs, $2M ARR</li>
   <li>Try it yourself: /seed-deck</li>
-  <li>Deck format inspired by <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a></li>
+  <li>Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a></li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">10</div>
 </div>
