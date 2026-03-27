@@ -86,7 +86,8 @@ layout: default
 <h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#000;margin:0 0 1.5rem;">One command installs the fix</h2>
 <ul style="font-size:1.15rem;color:#000;line-height:2.2;list-style:disc;padding-left:2rem;">
   <li>A Claude Code skill that scaffolds a YC-format deck in seconds</li>
-  <li>Tell it your story &#x2014; it writes the slides, builds the charts, deploys to Vercel</li>
+  <li>Tell it your story &#x2014; it writes the slides, builds the charts</li>
+  <li>Export as PDF or deploy straight to Vercel &#x2014; your call</li>
   <li>Say /seed-deck and you&#x2019;re live</li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">3</div>
