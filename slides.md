@@ -20,6 +20,10 @@ layout: default
 <p class="subtitle" style="font-size:0.85rem;color:#666;font-weight:400;line-height:1.6;margin:0;">Paste this into Claude Code to start: &#x201C;download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md&#x201D;</p>
 <button @click="copyInstall" style="flex-shrink:0;padding:0.35rem 0.7rem;font-size:0.75rem;border:1px solid #ccc;border-radius:6px;background:#f5f5f5;color:#333;cursor:pointer;white-space:nowrap;transition:all 0.2s;" :style="copied ? {background:'#000',color:'#fff',borderColor:'#000'} : {}">{{ copied ? 'Copied!' : 'Copy' }}</button>
 </div>
+<div style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+  <a href="https://cap-table.palmdrivecap.com/" target="_blank" style="padding:0.4rem 1rem;font-size:0.75rem;border:1px solid #ddd;border-radius:6px;background:#fff;color:#555;text-decoration:none;transition:all 0.2s;">Cap Table Planner &rarr;</a>
+  <a href="https://seed-finance.palmdrivecap.com/" target="_blank" style="padding:0.4rem 1rem;font-size:0.75rem;border:1px solid #ddd;border-radius:6px;background:#fff;color:#555;text-decoration:none;transition:all 0.2s;">Financial Planner &rarr;</a>
+</div>
 </div>
 
 <script setup>
