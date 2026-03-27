@@ -68,11 +68,11 @@ layout: default
 
 <!-- Slide 2: Problem -->
 <div style="padding:3rem 4rem;height:100%;display:flex;flex-direction:column;">
-<h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Founders build bad pitch decks</h2>
+<h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Traditional tools slow you down</h2>
 <ul style="font-size:1.15rem;color:#000;line-height:2.2;list-style:disc;padding-left:2rem;">
-  <li>They spend weeks fiddling with slides instead of building product</li>
-  <li>Most decks ignore the YC format that actually works</li>
-  <li>Designers cost $5k+, templates are generic, and AI chatbots hallucinate layouts</li>
+  <li>Figma and Google Slides can&#x2019;t be driven by AI &#x2014; every change is manual</li>
+  <li>Claude can write code, but GUI tools limit what it can iterate on</li>
+  <li>You should be refining your story, not dragging boxes around</li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">2</div>
 </div>
@@ -136,12 +136,11 @@ layout: default
 
 <!-- Slide 6: Insight / Why It Works -->
 <div style="padding:3rem 4rem;height:100%;display:flex;flex-direction:column;">
-<h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Why this works: skills are the new plugins</h2>
+<h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#000;margin:0 0 1.5rem;">Skills are the new plugins</h2>
 <ul style="font-size:1.15rem;color:#000;line-height:2.2;list-style:disc;padding-left:2rem;">
-  <li>Claude Code skills encode domain expertise as reusable prompts</li>
-  <li>Our skill carries the entire YC deck playbook &#x2014; structure, copy patterns, deploy pipeline</li>
-  <li>It gets smarter every time we update the SKILL.md on GitHub</li>
-  <li>Zero install friction: one curl, one slash command</li>
+  <li>Skills = domain expertise as reusable prompts</li>
+  <li>One file carries the full YC playbook</li>
+  <li>Updates on GitHub, improves everywhere instantly</li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">6</div>
 </div>
@@ -213,6 +212,7 @@ layout: default
   <li>Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li>Series A ready in 12 months: 10k installs, $2M ARR</li>
   <li>Try it yourself: /seed-deck</li>
+  <li>Deck format inspired by <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a></li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">10</div>
 </div>
