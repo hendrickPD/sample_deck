@@ -1,10 +1,4 @@
 <template>
-  <!-- Portrait nudge for mobile -->
-  <div v-if="isPortrait" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;">
-    <div style="font-size:2.5rem;">↺</div>
-    <div style="color:#fff;font-family:Inter,sans-serif;font-size:1rem;text-align:center;line-height:1.6;">Rotate your device<br/><span style="font-size:0.8rem;color:#888;">This deck is best viewed in landscape</span></div>
-  </div>
-
   <!-- Dot Rail Navigation -->
   <nav v-if="!isPrintMode" class="dot-nav">
     <button
@@ -18,13 +12,7 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
-
-// ── Portrait detection ──
-const isPortrait = ref(false)
-function checkOrientation() {
-  isPortrait.value = window.innerWidth < window.innerHeight
-}
+import { watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useNav } from '@slidev/client'
 
 const { currentSlideNo, total, go, isPrintMode } = useNav()
@@ -64,12 +52,6 @@ watch(currentSlideNo, (n) => {
 
 onMounted(() => {
   setTimeout(() => triggerReveals(currentSlideNo.value), 300)
-  checkOrientation()
-  window.addEventListener('resize', checkOrientation)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkOrientation)
 })
 
 // ── Slide View Analytics ──
