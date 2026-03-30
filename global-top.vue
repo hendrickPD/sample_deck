@@ -91,11 +91,19 @@ function sendAnalytics() {
   }
 }
 
+function onFullscreenChange() {
+  if (document.fullscreenElement && screen.orientation?.lock) {
+    screen.orientation.lock('landscape').catch(() => {})
+  }
+}
+
 onMounted(() => {
   window.addEventListener('beforeunload', sendAnalytics)
+  document.addEventListener('fullscreenchange', onFullscreenChange)
 })
 
 onUnmounted(() => {
   window.removeEventListener('beforeunload', sendAnalytics)
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
 })
 </script>
