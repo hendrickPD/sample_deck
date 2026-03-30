@@ -227,9 +227,7 @@ layout: default
   <li class="reveal reveal-delay-2">Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li class="reveal reveal-delay-3">Series A ready in 12 months: 10k installs, $2M ARR</li>
   <li class="reveal reveal-delay-4">Try it yourself: /seed-deck</li>
-  <li>Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a></li>
-  <li>Huge thank you to <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">Garry Tan</a> and <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">gstack</a></li>
-  <li>If you like this tool, check out our <a href="https://cap-table.palmdrivecap.com/" target="_blank" style="color:#f60;">cap table planner</a> and <a href="https://seed-finance.palmdrivecap.com/" target="_blank" style="color:#f60;">financial planner</a> tools as well</li>
+  <li>Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">YC&#x2019;s How to Build Your Seed Round Pitch Deck</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#f60;">Sam D&#x2019;Amico</a></li>
 </ul>
 <div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">10</div>
 </div>
