@@ -30,7 +30,6 @@ layout: default
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useNav } from '@slidev/client'
 const copied = ref(false)
-const copiedAsk = ref(false)
 
 // Keep control bar visible on slide 1 only
 const { currentSlideNo } = useNav()
@@ -64,18 +63,6 @@ function fallback(text) {
 function flash() {
   copied.value = true
   setTimeout(() => copied.value = false, 2000)
-}
-function copyInstallAsk() {
-  const text = 'download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md'
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => { copiedAsk.value = true; setTimeout(() => copiedAsk.value = false, 2000) }).catch(() => fallbackAsk(text))
-  } else { fallbackAsk(text) }
-}
-function fallbackAsk(text) {
-  const ta = document.createElement('textarea')
-  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'
-  document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
-  copiedAsk.value = true; setTimeout(() => copiedAsk.value = false, 2000)
 }
 </script>
 
@@ -240,12 +227,29 @@ layout: default
   <li class="reveal reveal-delay-2">Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li class="reveal reveal-delay-3">Series A ready in 12 months: 10k installs, $2M ARR</li>
 </ul>
-<div class="reveal reveal-delay-4" style="margin-top:2rem;display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;max-width:640px;">
-  <span style="font-size:0.8rem;color:#555;line-height:1.5;flex:1;">&#x201C;download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md&#x201D;</span>
-  <button @click="copyInstallAsk" style="flex-shrink:0;padding:0.4rem 0.9rem;font-size:0.8rem;font-weight:600;border:1px solid #000;border-radius:6px;background:#000;color:#fff;cursor:pointer;white-space:nowrap;transition:all 0.2s;" :style="copiedAsk ? {background:'#444',borderColor:'#444'} : {}">{{ copiedAsk ? 'Copied!' : 'Try building your own ↗' }}</button>
+<div class="reveal reveal-delay-4" style="margin-top:2rem;">
+  <button @click="copyIt" style="padding:0.5rem 1.25rem;font-size:0.85rem;font-weight:600;border:1.5px solid #000;border-radius:6px;background:#fff;color:#000;cursor:pointer;transition:all 0.2s;" :style="copied10 ? {background:'#000',color:'#fff'} : {}">{{ copied10 ? 'Copied!' : 'Try building your own →' }}</button>
 </div>
 <div style="margin-top:auto;">
   <div style="font-size:0.7rem;color:#999;">Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#999;">Aaron Harris</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#999;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#999;">Sam D&#x2019;Amico</a></div>
   <div style="text-align:right;font-size:0.75rem;color:#999;">10</div>
 </div>
+
+<script setup>
+import { ref } from 'vue'
+const copied10 = ref(false)
+function copyIt() {
+  const text = 'download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md'
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => flash()).catch(() => fb(text))
+  } else { fb(text) }
+}
+function fb(text) {
+  const ta = document.createElement('textarea')
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
+  flash()
+}
+function flash() { copied10.value = true; setTimeout(() => copied10.value = false, 2000) }
+</script>
 </div>
