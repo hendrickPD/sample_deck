@@ -20,9 +20,12 @@
     </svg>
   </button>
 
-  <!-- Video present overlay (iPhone CSS fallback + video canvas renderer) -->
-  <div v-if="showVideoOverlay" class="video-overlay" @click="handleOverlayTap" @touchstart="onTouchStart" @touchend="onTouchEnd">
-    <video ref="overlayVideo" class="video-overlay-screen" muted playsinline webkit-playsinline autoplay />
+  <!-- Present overlay: always image-backed for instant, reliable rendering -->
+  <div v-if="showVideoOverlay" class="video-overlay" @click="handleOverlayTap" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
+    <!-- Primary: pre-rendered PNG — works regardless of captureStream support -->
+    <img :src="`/slide-images/${currentSlideNo}.png`" class="video-overlay-screen" />
+    <!-- Secondary: canvas-stream video sits on top when available (drives webkitEnterFullscreen) -->
+    <video v-if="captureStreamReady" ref="overlayVideo" class="video-overlay-screen video-overlay-video" muted playsinline webkit-playsinline autoplay />
     <button class="video-overlay-close" @click.stop="exitPresent">✕</button>
     <div class="video-overlay-nav">{{ currentSlideNo }} / {{ total }}</div>
     <div v-if="overlayHint" class="video-overlay-hint">{{ overlayHint }}</div>
@@ -79,6 +82,7 @@ function sendAnalytics() {
 // ── Video Present Pipeline ──
 const isPresenting = ref(false)
 const showVideoOverlay = ref(false)
+const captureStreamReady = ref(false)   // true once captureStream pipeline is confirmed working
 const showHint = ref(false)
 const hintText = ref('')
 const overlayHint = ref('')
@@ -88,7 +92,6 @@ let isIphone = false
 let isStandalone = false
 let presentCanvas = null
 let presentStream = null
-let captureStreamWorks = false
 let slideImages = {}          // slideNo → HTMLImageElement (pre-loaded)
 
 function detectPlatform() {
@@ -118,23 +121,22 @@ function drawSlide(slideNo) {
   ctx.drawImage(slideImages[slideNo], 0, 0, presentCanvas.width, presentCanvas.height)
 }
 
-// Set up canvas + captureStream; returns true if captureStream is functional
+// Set up canvas + captureStream (best-effort — overlay works without it)
 async function setupCanvas() {
   presentCanvas = document.createElement('canvas')
   presentCanvas.width = 1920
   presentCanvas.height = 1080
-  // Fill white so first frame isn't black
   const ctx = presentCanvas.getContext('2d')
   ctx.fillStyle = '#fff'
   ctx.fillRect(0, 0, 1920, 1080)
 
   try {
     presentStream = presentCanvas.captureStream(30)
-    if (!presentStream.getTracks().length) return false
-    captureStreamWorks = true
-    return true
+    if (presentStream.getTracks().length > 0) {
+      captureStreamReady.value = true
+    }
   } catch (e) {
-    return false
+    // captureStream not supported — overlay falls back to <img> rendering
   }
 }
 
@@ -144,37 +146,34 @@ watch(currentSlideNo, (n) => {
 })
 
 // ── Present Entry / Exit ──
-async function enterPresent() {
-  if (!captureStreamWorks) {
-    enterCSSOverlay()
-    return
-  }
-
-  // Draw current slide before entering fullscreen (synchronous — images pre-loaded)
-  drawSlide(currentSlideNo.value)
-
+function enterPresent() {
   if (isIphone) {
-    // Path 1: native video fullscreen via webkitEnterFullscreen
-    // This is the only true fullscreen available on iPhone Safari
-    const video = createHiddenVideo()
-    if (video && video.webkitSupportsFullscreen) {
-      setupMediaSession()
-      video.addEventListener('webkitbeginfullscreen', () => { isPresenting.value = true }, { once: true })
-      video.addEventListener('webkitendfullscreen', () => {
-        isPresenting.value = false
-        showVideoOverlay.value = false
-        removeHiddenVideo()
-      }, { once: true })
-      video.webkitEnterFullscreen()
-      isPresenting.value = true
-      return
-    }
-    // Path 2: CSS overlay with canvas-rendered video (address bar stays but slide looks clean)
+    // Always show the overlay (PNG img — works regardless of captureStream)
     enterVideoOverlay()
     collapseAddressBar()
     showIphoneHint()
+
+    // Bonus: if captureStream works, also attempt native video fullscreen
+    if (captureStreamReady.value) {
+      drawSlide(currentSlideNo.value)
+      const video = createHiddenVideo()
+      if (video) {
+        // webkitSupportsFullscreen becomes true after loadedmetadata
+        video.addEventListener('loadedmetadata', () => {
+          if (video.webkitSupportsFullscreen) {
+            setupMediaSession()
+            video.addEventListener('webkitbeginfullscreen', () => {}, { once: true })
+            video.addEventListener('webkitendfullscreen', () => {
+              // Native fullscreen exited — keep overlay visible for tap nav
+              removeHiddenVideo()
+            }, { once: true })
+            video.webkitEnterFullscreen()
+          }
+        }, { once: true })
+      }
+    }
   } else {
-    // Desktop / Android — standard fullscreen
+    // Desktop / Android — native fullscreen
     const el = document.documentElement
     const p = el.requestFullscreen?.() || el.webkitRequestFullscreen?.()
     if (p) {
@@ -211,13 +210,15 @@ function removeHiddenVideo() {
 function enterVideoOverlay() {
   showVideoOverlay.value = true
   isPresenting.value = true
-  // Attach stream to the overlay video element after it renders
-  nextTick(() => {
-    if (overlayVideo.value && presentStream) {
-      overlayVideo.value.srcObject = presentStream
-      overlayVideo.value.play().catch(() => {})
-    }
-  })
+  // If captureStream is available, attach it to the overlay video element
+  if (captureStreamReady.value) {
+    nextTick(() => {
+      if (overlayVideo.value && presentStream) {
+        overlayVideo.value.srcObject = presentStream
+        overlayVideo.value.play().catch(() => {})
+      }
+    })
+  }
 }
 
 function enterCSSOverlay() {

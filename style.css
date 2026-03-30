@@ -215,9 +215,15 @@ html.dark .present-btn:hover {
   touch-action: none;
 }
 .video-overlay-screen {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+/* Canvas-stream video layered on top of the PNG — hidden when captureStream shows content */
+.video-overlay-video {
+  z-index: 1;
 }
 .video-overlay-close {
   position: absolute;
