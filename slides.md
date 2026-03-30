@@ -239,13 +239,13 @@ layout: default
   <li class="reveal reveal-delay-1">$1.5m to build the skill marketplace for AI-native founders</li>
   <li class="reveal reveal-delay-2">Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li class="reveal reveal-delay-3">Series A ready in 12 months: 10k installs, $2M ARR</li>
-  <li class="reveal reveal-delay-4" style="list-style:none;padding-left:0;margin-left:-2rem;">
-    <div style="display:flex;align-items:center;gap:0.5rem;max-width:640px;">
-      <span style="font-size:0.85rem;color:#555;line-height:1.5;">Try it: paste this into Claude Code &#x2192; &#x201C;download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md&#x201D;</span>
-      <button @click="copyInstallAsk" style="flex-shrink:0;padding:0.3rem 0.65rem;font-size:0.72rem;border:1px solid #ccc;border-radius:6px;background:#f5f5f5;color:#333;cursor:pointer;white-space:nowrap;transition:all 0.2s;" :style="copiedAsk ? {background:'#000',color:'#fff',borderColor:'#000'} : {}">{{ copiedAsk ? 'Copied!' : 'Copy' }}</button>
-    </div>
-  </li>
-  <li>Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#f60;">Aaron Harris</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#f60;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#f60;">Sam D&#x2019;Amico</a></li>
 </ul>
-<div style="margin-top:auto;text-align:right;font-size:0.75rem;color:#999;">10</div>
+<div class="reveal reveal-delay-4" style="margin-top:2rem;display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;max-width:640px;">
+  <span style="font-size:0.8rem;color:#555;line-height:1.5;flex:1;">&#x201C;download the seed-deck skill from https://raw.githubusercontent.com/hendrickPD/deck_skill/main/SKILL.md and install it to .claude/skills/seed-deck/SKILL.md&#x201D;</span>
+  <button @click="copyInstallAsk" style="flex-shrink:0;padding:0.4rem 0.9rem;font-size:0.8rem;font-weight:600;border:1px solid #000;border-radius:6px;background:#000;color:#fff;cursor:pointer;white-space:nowrap;transition:all 0.2s;" :style="copiedAsk ? {background:'#444',borderColor:'#444'} : {}">{{ copiedAsk ? 'Copied!' : 'Try building your own ↗' }}</button>
+</div>
+<div style="margin-top:auto;">
+  <div style="font-size:0.7rem;color:#999;">Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#999;">Aaron Harris</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#999;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#999;">Sam D&#x2019;Amico</a></div>
+  <div style="text-align:right;font-size:0.75rem;color:#999;">10</div>
+</div>
 </div>
