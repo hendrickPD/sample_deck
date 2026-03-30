@@ -20,8 +20,8 @@
     </svg>
   </button>
 
-  <!-- Rotate hint (iPhone, portrait, presenting) -->
-  <div v-if="showRotateHint" class="rotate-hint">Rotate to landscape</div>
+  <!-- iPhone hint: rotate or add to home screen -->
+  <div v-if="showHint" class="present-hint" @click="showHint = false">{{ hintText }}</div>
 </template>
 
 <script setup>
@@ -56,13 +56,8 @@ function triggerReveals(slideNo) {
   })
 }
 
-watch(currentSlideNo, (n) => {
-  triggerReveals(n)
-})
-
-onMounted(() => {
-  setTimeout(() => triggerReveals(currentSlideNo.value), 300)
-})
+watch(currentSlideNo, (n) => { triggerReveals(n) })
+onMounted(() => { setTimeout(() => triggerReveals(currentSlideNo.value), 300) })
 
 // ── Slide View Analytics ──
 const analytics = {}
@@ -96,54 +91,117 @@ function sendAnalytics() {
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))
     }
-  } catch (e) {
-    // Analytics are best-effort
-  }
+  } catch (e) {}
 }
 
 // ── Present Mode ──
 const isPresenting = ref(false)
-const showRotateHint = ref(false)
+const showHint = ref(false)
+const hintText = ref('')
 
-// Platform detection (run once at mount to avoid SSR issues)
+// Platform state — populated at mount
 let isIphone = false
-let canFullscreen = false
-let canLockOrientation = false
+let isStandalone = false
+let hintDismissed = false
 
 function detectPlatform() {
-  isIphone = /iPhone/.test(navigator.userAgent)
-  canFullscreen = !!document.documentElement.requestFullscreen
-  canLockOrientation = !!screen.orientation?.lock
+  const ua = navigator.userAgent
+  isIphone = /iPhone/.test(ua)
+  isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches
 }
 
-function checkOrientation() {
-  // Show rotate hint on devices where we can't force orientation
-  showRotateHint.value = isPresenting.value && window.innerWidth < window.innerHeight
+// Try to get the address bar to collapse by scrolling to y=1
+function collapseAddressBar() {
+  if (document.body.scrollHeight <= window.innerHeight) {
+    // Page not tall enough to scroll; temporarily extend it
+    document.body.style.minHeight = (window.innerHeight + 2) + 'px'
+    window.scrollTo(0, 1)
+    setTimeout(() => { document.body.style.minHeight = '' }, 400)
+  } else {
+    window.scrollTo(0, 1)
+  }
+}
+
+function showIphoneHint() {
+  if (hintDismissed) return
+  const isPortrait = window.innerWidth < window.innerHeight
+  if (!isStandalone) {
+    hintText.value = isPortrait
+      ? 'Rotate to landscape · Add to Home Screen for true fullscreen'
+      : 'Add to Home Screen for true fullscreen'
+    showHint.value = true
+    setTimeout(() => { showHint.value = false }, 5000)
+  } else if (isPortrait) {
+    hintText.value = 'Rotate to landscape'
+    showHint.value = true
+    setTimeout(() => { showHint.value = false }, 3000)
+  }
 }
 
 function enterPresent() {
-  if (isIphone) {
-    // iPhone Safari: can't do fullscreen — use CSS overlay mode
-    document.documentElement.classList.add('is-presenting')
-    isPresenting.value = true
-    checkOrientation()
-    window.addEventListener('resize', checkOrientation)
-  } else if (canFullscreen) {
-    document.documentElement.requestFullscreen().catch(() => {})
-    // isPresenting set in fullscreenchange handler
+  if (isIphone && !isStandalone) {
+    // Path 1: Try native fullscreen first — works on iOS 17.2+ in some configs
+    const el = document.documentElement
+    const fsPromise = el.requestFullscreen?.() || el.webkitRequestFullscreen?.()
+    if (fsPromise) {
+      fsPromise.then(() => {
+        isPresenting.value = true
+        // If fullscreen succeeded, try orientation lock
+        if (screen.orientation?.lock) {
+          screen.orientation.lock('landscape').catch(() => {})
+        }
+      }).catch(() => {
+        // Fullscreen blocked — fall through to CSS overlay
+        enterIphoneOverlay()
+      })
+    } else {
+      enterIphoneOverlay()
+    }
+  } else if (isIphone && isStandalone) {
+    // Standalone PWA on iPhone — just enter overlay + try orientation
+    enterIphoneOverlay()
+    if (screen.orientation?.lock) {
+      screen.orientation.lock('landscape').catch(() => {})
+    }
+  } else {
+    // Desktop / Android — native fullscreen + orientation lock
+    const el = document.documentElement
+    const fsPromise = el.requestFullscreen?.() || el.webkitRequestFullscreen?.()
+    if (fsPromise) {
+      fsPromise.then(() => {
+        isPresenting.value = true
+        if (screen.orientation?.lock) {
+          screen.orientation.lock('landscape').catch(() => {})
+        }
+      }).catch(() => {
+        enterCSSOverlay()
+      })
+    } else {
+      enterCSSOverlay()
+    }
   }
 }
 
+function enterIphoneOverlay() {
+  enterCSSOverlay()
+  collapseAddressBar()
+  showIphoneHint()
+}
+
+function enterCSSOverlay() {
+  document.documentElement.classList.add('is-presenting')
+  isPresenting.value = true
+}
+
 function exitPresent() {
-  if (isIphone) {
-    document.documentElement.classList.remove('is-presenting')
-    isPresenting.value = false
-    showRotateHint.value = false
-    window.removeEventListener('resize', checkOrientation)
-  } else if (document.fullscreenElement) {
-    document.exitFullscreen().catch(() => {})
-    // isPresenting cleared in fullscreenchange handler
+  document.documentElement.classList.remove('is-presenting')
+  isPresenting.value = false
+  showHint.value = false
+  if (document.fullscreenElement) {
+    document.exitFullscreen?.().catch(() => {})
   }
+  window.scrollTo(0, 0)
 }
 
 function togglePresent() {
@@ -157,10 +215,12 @@ function togglePresent() {
 function onFullscreenChange() {
   if (document.fullscreenElement) {
     isPresenting.value = true
-    if (canLockOrientation) {
+    if (screen.orientation?.lock) {
       screen.orientation.lock('landscape').catch(() => {})
     }
   } else {
+    // Exited fullscreen via Escape or native controls
+    document.documentElement.classList.remove('is-presenting')
     isPresenting.value = false
   }
 }
@@ -169,13 +229,13 @@ onMounted(() => {
   detectPlatform()
   window.addEventListener('beforeunload', sendAnalytics)
   document.addEventListener('fullscreenchange', onFullscreenChange)
+  document.addEventListener('webkitfullscreenchange', onFullscreenChange)
 })
 
 onUnmounted(() => {
   window.removeEventListener('beforeunload', sendAnalytics)
   document.removeEventListener('fullscreenchange', onFullscreenChange)
-  window.removeEventListener('resize', checkOrientation)
-  // Clean up iPhone overlay if component unmounts while presenting
+  document.removeEventListener('webkitfullscreenchange', onFullscreenChange)
   document.documentElement.classList.remove('is-presenting')
 })
 </script>

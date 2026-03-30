@@ -203,41 +203,58 @@ html.dark .present-btn:hover {
   background: rgba(26, 26, 46, 1);
 }
 
-/* ── Rotate Hint ── */
-.rotate-hint {
+/* ── Present Hint (rotate + add to home screen) ── */
+.present-hint {
   position: fixed;
-  bottom: 62px;
+  bottom: 64px;
   right: 12px;
   z-index: 200;
   font-size: 0.65rem;
-  color: #888;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 4px 10px;
-  border-radius: 8px;
-  border: 1px solid #e8e8e8;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  pointer-events: none;
+  color: #555;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   white-space: nowrap;
+  max-width: 240px;
+  white-space: normal;
+  line-height: 1.4;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  animation: hint-in 0.3s ease;
 }
-html.dark .rotate-hint {
-  background: rgba(30, 30, 50, 0.9);
+@keyframes hint-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+html.dark .present-hint {
+  background: rgba(30, 30, 50, 0.95);
   border-color: #444;
-  color: #aaa;
+  color: #bbb;
 }
 
-/* ── iPhone Safari Present Overlay ── */
+/* ── CSS Present Overlay (iPhone Safari fallback / standalone) ── */
 html.is-presenting {
   overflow: hidden;
 }
 html.is-presenting body {
   overflow: hidden;
+  /* lock body so iOS doesn't show rubber-band */
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
 }
 html.is-presenting #app {
   position: fixed;
+  /* Extend behind notch and home indicator when viewport-fit=cover is set */
+  top: env(safe-area-inset-top, 0px);
+  right: env(safe-area-inset-right, 0px);
+  bottom: env(safe-area-inset-bottom, 0px);
+  left: env(safe-area-inset-left, 0px);
+  /* Fallback: fill full viewport */
   inset: 0;
   z-index: 9990;
   overflow: hidden;
