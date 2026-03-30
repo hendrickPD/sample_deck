@@ -20,7 +20,6 @@ const { currentSlideNo, total, go, isPrintMode } = useNav()
 // ── Reveal Animation Trigger ──
 function triggerReveals(slideNo) {
   nextTick(() => {
-    // Reset bar heights and remove is-visible from all reveals
     document.querySelectorAll('.bar-fill').forEach(bar => {
       bar.style.height = '0'
     })
@@ -28,14 +27,12 @@ function triggerReveals(slideNo) {
       el.classList.remove('is-visible')
     })
 
-    // Find the active slide container by class name
     nextTick(() => {
       const activeWrapper = document.querySelector('.slidev-page-' + slideNo)
       if (activeWrapper) {
         const reveals = activeWrapper.querySelectorAll('.reveal')
         reveals.forEach(el => el.classList.add('is-visible'))
 
-        // Animate bar charts — set heights from data-h
         activeWrapper.querySelectorAll('.bar-chart.is-visible .bar-fill').forEach((bar, i) => {
           setTimeout(() => {
             bar.style.height = bar.dataset.h
@@ -46,13 +43,8 @@ function triggerReveals(slideNo) {
   })
 }
 
-watch(currentSlideNo, (n) => {
-  triggerReveals(n)
-})
-
-onMounted(() => {
-  setTimeout(() => triggerReveals(currentSlideNo.value), 300)
-})
+watch(currentSlideNo, (n) => { triggerReveals(n) })
+onMounted(() => { setTimeout(() => triggerReveals(currentSlideNo.value), 300) })
 
 // ── Slide View Analytics ──
 const analytics = {}
@@ -86,11 +78,10 @@ function sendAnalytics() {
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))
     }
-  } catch (e) {
-    // Analytics are best-effort
-  }
+  } catch (e) {}
 }
 
+// ── Orientation lock on fullscreen (desktop / Android) ──
 function onFullscreenChange() {
   if (document.fullscreenElement && screen.orientation?.lock) {
     screen.orientation.lock('landscape').catch(() => {})
