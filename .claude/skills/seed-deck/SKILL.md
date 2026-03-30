@@ -117,8 +117,8 @@ function triggerReveals(slideNo) {
   })
 }
 
-watch(currentSlideNo, (n) => triggerReveals(n))
-onMounted(() => setTimeout(() => triggerReveals(currentSlideNo.value), 300))
+watch(currentSlideNo, (n) => { triggerReveals(n) })
+onMounted(() => { setTimeout(() => triggerReveals(currentSlideNo.value), 300) })
 
 // ── Slide View Analytics ──
 const analytics = {}
@@ -131,10 +131,14 @@ function recordSlideLeave() {
   analytics[currentSlide] += duration
 }
 
+function recordSlideEnter(slideNo) {
+  currentSlide = slideNo
+  enterTime = Date.now()
+}
+
 watch(currentSlideNo, (newSlide) => {
   recordSlideLeave()
-  currentSlide = newSlide
-  enterTime = Date.now()
+  recordSlideEnter(newSlide)
 })
 
 function sendAnalytics() {
@@ -147,8 +151,22 @@ function sendAnalytics() {
   } catch (e) {}
 }
 
-onMounted(() => window.addEventListener('beforeunload', sendAnalytics))
-onUnmounted(() => window.removeEventListener('beforeunload', sendAnalytics))
+// ── Orientation lock on fullscreen (desktop / Android) ──
+function onFullscreenChange() {
+  if (document.fullscreenElement && screen.orientation?.lock) {
+    screen.orientation.lock('landscape').catch(() => {})
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('beforeunload', sendAnalytics)
+  document.addEventListener('fullscreenchange', onFullscreenChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', sendAnalytics)
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
+})
 </script>
 ```
 
@@ -268,6 +286,16 @@ defaults:
   layout: default
 transition: fade
 layout: default
+head:
+  - - meta
+    - name: apple-mobile-web-app-capable
+      content: 'yes'
+  - - meta
+    - name: apple-mobile-web-app-status-bar-style
+      content: black-translucent
+  - - meta
+    - name: viewport
+      content: 'width=device-width, initial-scale=1, viewport-fit=cover'
 ---
 
 <!-- Slide 1: Title -->
