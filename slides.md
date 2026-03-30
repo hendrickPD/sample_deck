@@ -227,12 +227,15 @@ layout: default
   <li class="reveal reveal-delay-2">Hire 3 engineers, launch 10 vertical skills (decks, contracts, data rooms)</li>
   <li class="reveal reveal-delay-3">Series A ready in 12 months: 10k installs, $2M ARR</li>
 </ul>
-<div class="reveal reveal-delay-4" style="margin-top:2rem;">
-  <button @click="copyIt" style="padding:0.5rem 1.25rem;font-size:0.85rem;font-weight:600;border:1.5px solid #000;border-radius:6px;background:#fff;color:#000;cursor:pointer;transition:all 0.2s;" :style="copied10 ? {background:'#000',color:'#fff'} : {}">{{ copied10 ? 'Copied!' : 'Try building your own →' }}</button>
-</div>
 <div style="margin-top:auto;">
-  <div style="font-size:0.7rem;color:#999;">Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#999;">Aaron Harris</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#999;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#999;">Sam D&#x2019;Amico</a></div>
-  <div style="text-align:right;font-size:0.75rem;color:#999;">10</div>
+  <div class="reveal reveal-delay-4" style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;padding:0.6rem 0.9rem;background:#f5f5f5;border-radius:8px;">
+    <span style="font-size:0.8rem;color:#555;">Paste into Claude Code to build your own deck:</span>
+    <button @click="copyIt" style="flex-shrink:0;padding:0.3rem 0.8rem;font-size:0.78rem;font-weight:600;border:1.5px solid #000;border-radius:5px;background:#000;color:#fff;cursor:pointer;white-space:nowrap;transition:all 0.2s;" :style="copied10 ? {background:'#444',borderColor:'#444'} : {}">{{ copied10 ? 'Copied!' : 'Copy prompt' }}</button>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:0.7rem;color:#999;">Huge thank you to <a href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" style="color:#999;">Aaron Harris</a>, <a href="https://github.com/garrytan/gstack" target="_blank" style="color:#999;">Garry Tan</a>, and <a href="https://github.com/sdamico" target="_blank" style="color:#999;">Sam D&#x2019;Amico</a></div>
+    <div style="font-size:0.75rem;color:#999;">10</div>
+  </div>
 </div>
 
 <script setup>
