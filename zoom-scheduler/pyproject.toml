@@ -1,0 +1,26 @@
+[project]
+name = "zoom-scheduler"
+version = "0.1.0"
+description = "CLI tool for creating scheduled Zoom meetings via Server-to-Server OAuth."
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.0",
+    "python-dotenv>=1.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "responses>=0.24",
+]
+
+[project.scripts]
+zoom-schedule = "zoom_scheduler.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zoom_scheduler"]
